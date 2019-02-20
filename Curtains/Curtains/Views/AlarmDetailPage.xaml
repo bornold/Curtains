@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Curtains.Views.AlarmDetailPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="Save_Clicked" Text="Save" />
+    </ContentPage.ToolbarItems>
+    <Frame
+        Padding="16"
+        HasShadow="True"
+        VerticalOptions="Start">
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="Grid.Row" Value="1" />
+                    <Setter Property="HorizontalOptions" Value="Center" />
+                    <Setter Property="VerticalOptions" Value="End" />
+                    <Setter Property="HorizontalTextAlignment" Value="Center" />
+                    <Setter Property="VerticalTextAlignment" Value="End" />
+                </Style>
+                <Style TargetType="Switch">
+                    <Setter Property="Grid.Row" Value="2" />
+                    <Setter Property="HorizontalOptions" Value="Center" />
+                    <Setter Property="VerticalOptions" Value="Start" />
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+            <TimePicker Grid.ColumnSpan="6" Time="{Binding Time}" />
+            <Label Grid.Column="0" Text="Mon" />
+            <Switch Grid.Column="0" IsToggled="{Binding Monday}" />
+            <Label Grid.Column="1" Text="Tue" />
+            <Switch Grid.Column="1" IsToggled="{Binding Tuesday}" />
+            <Label Grid.Column="2" Text="Wen" />
+            <Switch Grid.Column="2" IsToggled="{Binding Wednesday}" />
+            <Label Grid.Column="3" Text="Thu" />
+            <Switch Grid.Column="3" IsToggled="{Binding Thursday}" />
+            <Label Grid.Column="4" Text="Fri" />
+            <Switch Grid.Column="4" IsToggled="{Binding Friday}" />
+            <Label Grid.Column="5" Text="Sat" />
+            <Switch Grid.Column="5" IsToggled="{Binding Saturday}" />
+            <Label Grid.Column="6" Text="Sun" />
+            <Switch Grid.Column="6" IsToggled="{Binding Sunday}" />
+        </Grid>
+    </Frame>
+</ContentPage>

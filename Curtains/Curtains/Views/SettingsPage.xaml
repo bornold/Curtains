@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Curtains.Views.SettingsPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:Curtains.ViewModels"
+    Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <vm:SettingsViewModel />
+    </ContentPage.BindingContext>
+    <StackLayout Padding="24">
+        <Label Text="Host" />
+        <Entry
+            Keyboard="Url"
+            Placeholder="Host"
+            Text="{Binding Host}" />
+        <Label Text="Port" />
+        <Entry Keyboard="Numeric" Text="{Binding Port}" />
+        <Label Text="User name" />
+        <Entry Placeholder="User name" Text="{Binding UserName}" />
+        <Label Text="Passkey" />
+        <Entry
+            IsPassword="True"
+            Placeholder="Passkey"
+            Text="{Binding PassKey}">
+            <Entry.Triggers>
+                <DataTrigger
+                    Binding="{Binding HasStoredKey}"
+                    TargetType="Entry"
+                    Value="True">
+                    <Setter Property="Placeholder" Value="Unchanged" />
+                </DataTrigger>
+            </Entry.Triggers>
+        </Entry>
+        <Label Text="AutoConnect" />
+        <Switch IsToggled="{Binding AutoConnect}" />
+        <Button Clicked="Button_Clicked" Text="Connect" />
+        <Label Text="{Binding ErrorMessage}" TextColor="Red" />
+    </StackLayout>
+</ContentPage>
