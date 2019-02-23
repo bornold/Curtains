@@ -1,8 +1,21 @@
-﻿namespace Curtains.Helpers
+﻿using System.Linq;
+
+namespace Curtains.Helpers
 {
-    internal static class StringExtensions
+    public static class StringExtensions
     {
-        internal static string EscapeStarForGrep(this string grep)
-            => string.Join("\\*", grep.Split('*'));
+        public static string EscapeSpecialCharacterGrep(this string grep)
+            => new string(
+                grep
+                    .SelectMany(c => SpecialCharacter.Contains(c) ? new[] { '\\', c } : new[] { c })
+                    .ToArray());
+        
+        static readonly char[] SpecialCharacter = new char[]
+        {
+            '*',
+            '.',
+            '[',
+            '\\',
+        };
     }
 }

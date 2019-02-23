@@ -8,6 +8,7 @@
         <ToolbarItem Clicked="Save_Clicked" Text="Save" />
     </ContentPage.ToolbarItems>
     <Frame
+        Margin="8"
         Padding="16"
         HasShadow="True"
         VerticalOptions="Start">

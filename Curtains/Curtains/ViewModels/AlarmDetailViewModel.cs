@@ -19,10 +19,10 @@ namespace Curtains.ViewModels
         {
             Title = "Change alarm";
             Item = item;
-            Time = ParseTime(item.Raw);
+            (days, Time) = ParseAlarm(item.Raw);
         }
 
-        Days Days;
+        Days days;
         public TimeSpan Time { get; set; }
 
         public bool Monday      { get => Has(Days.mon); set => Set(Days.mon); }
@@ -32,8 +32,8 @@ namespace Curtains.ViewModels
         public bool Friday      { get => Has(Days.fri); set => Set(Days.fri); }
         public bool Saturday    { get => Has(Days.sat); set => Set(Days.sat); }
         public bool Sunday      { get => Has(Days.sun); set => Set(Days.sun); }
-        bool Has(Days day) => Days.HasFlag(day);
-        void Set(Days day) => Days |= day;
+        bool Has(Days day) => days.HasFlag(day);
+        void Set(Days day) => days |= day;
 
         public string Command { get; set; } = "python ~/motor/open.py";
 
@@ -41,17 +41,21 @@ namespace Curtains.ViewModels
 
         internal Task AddItem() =>
             NewItem ?
-            DataStore.AddItem(new CronJob(Command, Time, Days)) :
-            DataStore.UpdateItem(Item.Raw, new CronJob(Command, Time, Days));
+            DataStore.AddItem(new CronJob(Command, Time, days)) :
+            DataStore.UpdateItem(Item.Raw, new CronJob(Command, Time, days));
 
-        TimeSpan ParseTime(string raw)
+        public (Days, TimeSpan) ParseAlarm(string raw)
         {
-            string[] seperated = raw.Split(' ');
+            var seperated = raw.Split(' ');
             if (seperated.Length < 5)
-                return TimeSpan.Zero;
-            if (TimeSpan.TryParse($"{seperated[1]}:{seperated[0]}", out var time))
-                return time;
-            return TimeSpan.Zero;
+                return (Days.non, TimeSpan.Zero);
+            TimeSpan.TryParse($"{seperated[1]}:{seperated[0]}", out var time);
+
+            if (Enum.TryParse(seperated[4], true, out Days dayValue) &&
+                (Enum.IsDefined(typeof(Days), dayValue) | dayValue.ToString().Contains(",")))
+                return (dayValue, time);
+            
+            return (Days.non, time);
         }
     }
 }

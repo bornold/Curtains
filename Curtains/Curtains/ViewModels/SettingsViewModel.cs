@@ -58,10 +58,7 @@ namespace Curtains.ViewModels
         }
 
         public string ErrorMessage { get; set; }
-        public SettingsViewModel()
-        {
-            Title = "Settings";
-        }
+        public SettingsViewModel() => Title = "Settings";
 
         internal async Task<bool> OnAppearing()
         {
@@ -103,7 +100,7 @@ namespace Curtains.ViewModels
                 }
                 else
                 {
-                    FileData fileData = await CrossFilePicker.Current.PickFile();
+                    var fileData = await CrossFilePicker.Current.PickFile();
                     if (fileData == null)
                         return false;
                     PrivateKey = System.Text.Encoding.UTF8.GetString(fileData.DataArray);

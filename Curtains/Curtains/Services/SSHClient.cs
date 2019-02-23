@@ -12,9 +12,9 @@ namespace Curtains.Services
     {
         public SSHClient(string host, int port, string username, string passKey, Stream fileStream)
         {
-            PrivateKeyFile privateKeyFile = new PrivateKeyFile(fileStream, passKey);
+            var privateKeyFile = new PrivateKeyFile(fileStream, passKey);
             var privateKeyAuth = new PrivateKeyAuthenticationMethod(username, privateKeyFile);
-            ConnectionInfo connectionInfo = new ConnectionInfo(host, port, username, authenticationMethods: privateKeyAuth);
+            var connectionInfo = new ConnectionInfo(host, port, username, authenticationMethods: privateKeyAuth);
 
             Connection = new SshClient(connectionInfo);
             Connection.Connect();
@@ -31,10 +31,10 @@ namespace Curtains.Services
             return Task.Run(() => Connection.RunCommand(command).Error == null);
         }
 
-        readonly string removeCommand = "crontab -l | grep -v '{0}'  | crontab -";
+        readonly string removeCommand = "crontab -l | grep -v '^{0}$' | crontab -";
         public Task<bool> DeleteItem(string id)
         {
-            var escaped = id.EscapeStarForGrep();
+            var escaped = id.EscapeSpecialCharacterGrep();
             var command = string.Format(removeCommand, escaped);
             return 
                 Task.Run(() => Connection.RunCommand(command).Error == null);
