@@ -26,6 +26,9 @@
                         <!--<local:AlarmCell/>-->
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.Footer>
+                    <Button Text="Open" Clicked="Open_Clicked"/>
+                </ListView.Footer>
             </ListView>
         </StackLayout>
     </ContentPage.Content>

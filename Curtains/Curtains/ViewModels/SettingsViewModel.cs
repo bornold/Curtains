@@ -108,7 +108,7 @@ namespace Curtains.ViewModels
                 }
 
                 var pass = string.IsNullOrEmpty(PassKey) ? StoredPassKey : PassKey;
-                DataConnection = new SSHClient(Host, Port, UserName, pass, privateKeyStream);
+                DataConnection = new SSHConnection(Host, Port, UserName, pass, privateKeyStream);
 
                 await SecureStorage.SetAsync(PassKeyKey, pass);
                 await SecureStorage.SetAsync(PrivateKeyKey, PrivateKey);

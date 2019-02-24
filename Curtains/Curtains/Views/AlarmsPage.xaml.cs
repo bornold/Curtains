@@ -28,16 +28,15 @@ namespace Curtains.Views
             ItemsListView.SelectedItem = null;
         }
 
-        async void AddItem_Clicked(object sender, EventArgs e)
-        {
-
-            await Navigation.PushAsync(new AlarmDetailPage());
-        }
+        async void AddItem_Clicked(object sender, EventArgs e) => await Navigation.PushAsync(new AlarmDetailPage());
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
             viewModel.LoadItemsCommand.Execute(null);
         }
+
+        void Open_Clicked(object sender, EventArgs e) => viewModel.RunCommand.Execute(null);
+        
     }
 }

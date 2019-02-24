@@ -12,12 +12,14 @@ namespace Curtains.ViewModels
     {
         public ObservableCollection<CronJob> Items { get; set; }
         public Command LoadItemsCommand { get; set; }
+        public Command RunCommand { get; set; }
 
         public AlarmsViewModel()
         {
             Title = "Alarms";
             Items = new ObservableCollection<CronJob>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            RunCommand = new Command(async () => await ExecuteRunCommand());
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -45,5 +47,8 @@ namespace Curtains.ViewModels
                 IsBusy = false;
             }
         }
+
+        Task ExecuteRunCommand() => DataConnection.RunCommand(Command);
+
     }
 }

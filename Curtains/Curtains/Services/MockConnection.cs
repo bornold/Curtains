@@ -6,23 +6,22 @@ using Renci.SshNet;
 
 namespace Curtains.Services
 {
-    public class MockDataStore : IDataStore<CronJob>
+    public class MockConnection : IConnection<CronJob>
     {
         List<CronJob> CronJobs;
 
         public BaseClient Client => new MockedClient(null, false);
 
-        public MockDataStore()
+        public MockConnection()
         {
             CronJobs = new List<CronJob>();
             var mockCronJobs = new List<CronJob>
             {
-                new CronJob { Raw ="This is an CronJob description." },
-                new CronJob { Raw ="This is an CronJob description." },
-                new CronJob { Raw ="This is an CronJob description." },
-                new CronJob { Raw ="This is an CronJob description." },
-                new CronJob { Raw ="This is an CronJob description." },
-                new CronJob { Raw ="This is an CronJob description." },
+                new CronJob { Raw = $"13 30 * * fri ls" },
+                new CronJob { Raw = $"13 30 * * fri,mon,sun pwd" },
+                new CronJob { Raw = $"13 30 * * tue ls" },
+                new CronJob { Raw = $"13 30 * * sat ls" },
+                new CronJob { Raw = $"13 30 * * * ls" },
             };
 
             foreach (var cronJob in mockCronJobs)
@@ -55,14 +54,14 @@ namespace Curtains.Services
             return await Task.FromResult(true);
         }
 
-        public async Task<IEnumerable<CronJob>> GetItems(bool forceRefresh = false)
-        {
-            return await Task.FromResult(CronJobs);
-        }
+        public async Task<IEnumerable<CronJob>> GetItems(bool forceRefresh = false) => await Task.FromResult(CronJobs);
 
         public void Dispose() { }
 
-        private class MockedClient : BaseClient
+        public Task<string> RunCommand(string command) => Task.FromResult("ok");
+        
+
+        class MockedClient : BaseClient
         {
 
             public MockedClient(ConnectionInfo connectionInfo, bool ownsConnectionInfo) : base(connectionInfo, ownsConnectionInfo)

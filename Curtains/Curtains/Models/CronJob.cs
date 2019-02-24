@@ -5,10 +5,6 @@ namespace Curtains.Models
     public class CronJob
     {
         public CronJob() { }
-        public CronJob(string command)
-        {
-            Raw = $"* * * * * {command}";
-        }
 
         public CronJob(string command, TimeSpan time, Days days = Days.all)
         {

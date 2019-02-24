@@ -35,7 +35,6 @@ namespace Curtains.ViewModels
         bool Has(Days day) => days.HasFlag(day);
         void Set(Days day) => days |= day;
 
-        public string Command { get; set; } = "python ~/motor/open.py";
 
         internal Task DeleteItem() => DataStore.DeleteItem(Item?.Raw);
 
