@@ -32,7 +32,7 @@ namespace Curtains.ViewModels
             try
             {
                 Items.Clear();
-                var items = await DataStore.GetItems(true);
+                var items = await Connection.GetItems(true);
                 foreach (var item in items)
                 {
                     Items.Add(item);

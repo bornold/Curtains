@@ -8,33 +8,57 @@
     <ContentPage.BindingContext>
         <vm:SettingsViewModel />
     </ContentPage.BindingContext>
-    <StackLayout Padding="24">
-        <Label Text="Host" />
-        <Entry
-            Keyboard="Url"
-            Placeholder="Host"
-            Text="{Binding Host}" />
-        <Label Text="Port" />
-        <Entry Keyboard="Numeric" Text="{Binding Port}" />
-        <Label Text="User name" />
-        <Entry Placeholder="User name" Text="{Binding UserName}" />
-        <Label Text="Passkey" />
-        <Entry
-            IsPassword="True"
-            Placeholder="Passkey"
-            Text="{Binding PassKey}">
-            <Entry.Triggers>
-                <DataTrigger
-                    Binding="{Binding HasStoredKey}"
-                    TargetType="Entry"
-                    Value="True">
-                    <Setter Property="Placeholder" Value="Unchanged" />
-                </DataTrigger>
-            </Entry.Triggers>
-        </Entry>
-        <Label Text="AutoConnect" />
-        <Switch IsToggled="{Binding AutoConnect}" />
-        <Button Clicked="Button_Clicked" Text="Connect" />
-        <Label Text="{Binding ErrorMessage}" TextColor="Red" />
-    </StackLayout>
+    <ContentPage.Resources>
+        <Style TargetType="Entry">
+            <Setter Property="IsEnabled" Value="{Binding IsConnected, Converter={StaticResource not}}"/>
+        </Style>
+    </ContentPage.Resources>
+    <ScrollView>
+        <StackLayout Padding="24">
+            <Label Text="Host" />
+            <Entry
+                Keyboard="Url"
+                Placeholder="Host"
+                Text="{Binding Host}" />
+            <Label Text="Port" />
+            <Entry 
+                Keyboard="Numeric"
+                Text="{Binding Port}"/>
+            <Label Text="User name" />
+            <Entry
+                Placeholder="User name" 
+                Text="{Binding UserName}" />
+            <Label Text="Passkey" />
+            <Entry
+                IsPassword="True"
+                Placeholder="Passkey"
+                Text="{Binding PassKey}">
+                <Entry.Triggers>
+                    <DataTrigger
+                        Binding="{Binding HasStoredKey}"
+                        TargetType="Entry"
+                        Value="True">
+                        <Setter Property="Placeholder" Value="Unchanged" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
+            <Label Text="AutoConnect" />
+            <Switch 
+                IsToggled="{Binding AutoConnect}"                 
+                IsEnabled="{Binding IsConnected, Converter={StaticResource not}}"/>
+            <Label Text="{Binding ErrorMessage}" TextColor="Red" />
+            <Button 
+                Clicked="Button_Clicked" 
+                Text="Connect" >
+                <Button.Triggers>
+                    <DataTrigger
+                        Binding="{Binding IsConnected}"
+                        TargetType="Button"
+                        Value="True">
+                        <Setter Property="Text" Value="Reconnect"/>
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

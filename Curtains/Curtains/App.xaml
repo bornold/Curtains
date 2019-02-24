@@ -2,19 +2,56 @@
 <Application
     x:Class="Curtains.App"
     xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:helpers="clr-namespace:Curtains.Helpers"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <Application.Resources>
         <ResourceDictionary>
+
+            <helpers:NotConverter x:Key="not" />
+
             <!--  Global Styles  -->
             <Color x:Key="NavigationPrimary">#212121</Color>
-            <Color x:Key="BackgroundPrimary">#3d3d3d</Color>
+            <Color x:Key="BackgroundPrimary">#ededed</Color>
+            <Color x:Key="AccentColor">#000000</Color>
+            <Color x:Key="TextColor">#6d6d6d</Color>
+            <Color x:Key="TextColorSecondary">#6d6d6d</Color>
+            <Color x:Key="ButtonTextColor">#ffffff</Color>
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
-                <Setter Property="BarTextColor" Value="White" />
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundPrimary}" />
+                <Setter Property="BarTextColor" Value="{x:StaticResource TextColor}" />
             </Style>
+            
             <Style TargetType="ContentPage">
                 <Setter Property="BackgroundColor" Value="{StaticResource BackgroundPrimary}" />
             </Style>
+            <Style TargetType="StackLayout">
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundPrimary}" />
+            </Style>
+            <Style TargetType="Grid">
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundPrimary}" />
+            </Style>
+            <Style TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundPrimary}" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="BorderRadius" Value="12" />
+                <Setter Property="WidthRequest" Value="200" />
+                <Setter Property="Margin" Value="32"/>
+                <Setter Property="VerticalOptions" Value="EndAndExpand"/>
+                <Setter Property="BackgroundColor" Value="{x:StaticResource NavigationPrimary}"/>
+                <Setter Property="TextColor" Value="{x:StaticResource ButtonTextColor}" />
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{x:StaticResource TextColor}" />
+            </Style>
+            <Style TargetType="Entry">
+                <Setter Property="IsSpellCheckEnabled" Value="False"/>
+                <Setter Property="IsTextPredictionEnabled" Value="False"/>
+                <Setter Property="PlaceholderColor" Value="{x:StaticResource TextColorSecondary}" />
+                <Setter Property="TextColor"  Value="{x:StaticResource AccentColor}" />
+            </Style>
         </ResourceDictionary>
-    </Application.Resources>
+    </Application.Resources> 
 </Application>

@@ -57,7 +57,12 @@ namespace Curtains.ViewModels
             set => Preferences.Set(nameof(AutoConnect), value);
         }
 
-        public string ErrorMessage { get; set; }
+        string errorMessage;
+        public string ErrorMessage
+        {
+            get => errorMessage;
+            set => SetProperty(ref errorMessage, value);
+        }
         public SettingsViewModel() => Title = "Settings";
 
         internal async Task<bool> OnAppearing()
@@ -69,7 +74,7 @@ namespace Curtains.ViewModels
                 StoredPassKey = await SecureStorage.GetAsync(PassKeyKey);
                 PrivateKey = await SecureStorage.GetAsync(PrivateKeyKey);
 
-                if (PassKey != null && 
+                if (StoredPassKey != null && 
                     PrivateKey != null && 
                     UserName != null && 
                     Host != null &&
@@ -109,9 +114,10 @@ namespace Curtains.ViewModels
 
                 var pass = string.IsNullOrEmpty(PassKey) ? StoredPassKey : PassKey;
                 DataConnection = new SSHConnection(Host, Port, UserName, pass, privateKeyStream);
-
+                OnPropertyChanged(nameof(IsConnected));
                 await SecureStorage.SetAsync(PassKeyKey, pass);
                 await SecureStorage.SetAsync(PrivateKeyKey, PrivateKey);
+                ErrorMessage = string.Empty;
                 return true;
             }
             catch (Exception e)
@@ -119,6 +125,13 @@ namespace Curtains.ViewModels
                 ErrorMessage = e.Message;
                 return false;
             }
+        }
+
+        internal void Disconnect()
+        {
+            Connection?.Client?.Dispose();
+            DataConnection = null;
+            OnPropertyChanged(nameof(IsConnected));
         }
     }
 }

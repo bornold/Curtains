@@ -10,8 +10,10 @@ namespace Curtains.ViewModels
     public class BaseViewModel : INotifyPropertyChanged
     {
         internal static IConnection<CronJob> DataConnection;
-        public IConnection<CronJob> DataStore => DataConnection;
+        public IConnection<CronJob> Connection => DataConnection;
         public string Command { get; set; } = "python ~/motor/open.py";
+        public bool IsConnected => Connection?.Client?.IsConnected ?? false;
+
 
         bool isBusy = false;
         public bool IsBusy

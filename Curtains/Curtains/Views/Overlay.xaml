@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Curtains.Views.Overlay"
+             BackgroundColor="Transparent">
+    <StackLayout VerticalOptions="Center"
+        BackgroundColor="Transparent">
+            <Label Text="Connecting"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+        <ActivityIndicator IsRunning="True"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center"/>
+        </StackLayout>
+</ContentPage>

@@ -19,24 +19,41 @@ namespace Curtains.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            if (!apperedOnce && await viewModel.OnAppearing())
+            if (!apperedOnce)
             {
-                await ChangePage();
+                await Navigation.PushModalAsync(new Overlay(), true);
+                if (await viewModel.OnAppearing())
+                {
+                    await ChangePage();
+                }
+                await Navigation.PopModalAsync(true);
             }
+            else if (viewModel.IsConnected)
+            {
+                var disconnect = new ToolbarItem() { Text = "Disconnect" };
+                disconnect.Clicked += Disconnect_Clicked;
+                ToolbarItems.Add(disconnect);
+            }
+
             apperedOnce = true;
         }
 
-        private async void Button_Clicked(object sender, System.EventArgs e)
+        async void Button_Clicked(object sender, System.EventArgs e)
         {
-            if (await viewModel.Connect())
+            await Navigation.PushModalAsync(new Overlay(), true);
+            if (viewModel.IsConnected || await viewModel.Connect())
             {
                 await ChangePage();
             }
+            await Navigation.PopModalAsync(true);
         }
-        async Task ChangePage()
+
+        void Disconnect_Clicked(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(new AlarmsPage());
-            Navigation.RemovePage(this);
+            viewModel.Disconnect();
+            ToolbarItems.Clear();
         }
+
+        Task ChangePage() => Navigation.PushAsync(new AlarmsPage());
     }
 }

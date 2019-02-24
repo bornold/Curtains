@@ -36,12 +36,12 @@ namespace Curtains.ViewModels
         void Set(Days day) => days |= day;
 
 
-        internal Task DeleteItem() => DataStore.DeleteItem(Item?.Raw);
+        internal Task DeleteItem() => Connection.DeleteItem(Item?.Raw);
 
         internal Task AddItem() =>
             NewItem ?
-            DataStore.AddItem(new CronJob(Command, Time, days)) :
-            DataStore.UpdateItem(Item.Raw, new CronJob(Command, Time, days));
+            Connection.AddItem(new CronJob(Command, Time, days)) :
+            Connection.UpdateItem(Item.Raw, new CronJob(Command, Time, days));
 
         public (Days, TimeSpan) ParseAlarm(string raw)
         {

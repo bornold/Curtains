@@ -17,7 +17,10 @@ namespace Curtains.Views
             InitializeComponent();
 
             BindingContext = viewModel = new AlarmsViewModel();
+            viewModel.Connection.Client.ErrorOccurred += Client_ErrorOccurred;
         }
+
+        void Client_ErrorOccurred(object sender, Renci.SshNet.Common.ExceptionEventArgs e) => Device.BeginInvokeOnMainThread(async () => await Navigation.PopAsync());
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
@@ -35,8 +38,6 @@ namespace Curtains.Views
             base.OnAppearing();
             viewModel.LoadItemsCommand.Execute(null);
         }
-
         void Open_Clicked(object sender, EventArgs e) => viewModel.RunCommand.Execute(null);
-        
     }
 }
