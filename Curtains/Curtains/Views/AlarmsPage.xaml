@@ -17,12 +17,12 @@
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 ItemSelected="OnItemSelected"
                 ItemsSource="{Binding Items}"
+                HasUnevenRows="True"
                 RefreshCommand="{Binding LoadItemsCommand}"
                 VerticalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding Raw}" />
-                        <!--<local:AlarmCell/>-->
+                        <local:AlarmCell/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

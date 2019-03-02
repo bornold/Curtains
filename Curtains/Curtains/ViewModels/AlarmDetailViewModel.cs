@@ -6,15 +6,9 @@ namespace Curtains.ViewModels
 {
     public class AlarmDetailViewModel : BaseViewModel
     {
-        bool NewItem => Item == null;
         public CronJob Item { get; set; }
 
-        public AlarmDetailViewModel()
-        {
-            Title = "New alarm";
-            Time = TimeSpan.FromHours(7);
-        }
-
+        public AlarmDetailViewModel() { }
         public AlarmDetailViewModel(CronJob item)
         {
             Title = "Change alarm";
@@ -22,7 +16,7 @@ namespace Curtains.ViewModels
             (days, Time) = ParseAlarm(item.Raw);
         }
 
-        Days days;
+        protected Days days;
         public TimeSpan Time { get; set; }
 
         public bool Monday      { get => Has(Days.mon); set => Set(Days.mon); }
@@ -34,14 +28,6 @@ namespace Curtains.ViewModels
         public bool Sunday      { get => Has(Days.sun); set => Set(Days.sun); }
         bool Has(Days day) => days.HasFlag(day);
         void Set(Days day) => days |= day;
-
-
-        internal Task DeleteItem() => Connection.DeleteItem(Item?.Raw);
-
-        internal Task AddItem() =>
-            NewItem ?
-            Connection.AddItem(new CronJob(Command, Time, days)) :
-            Connection.UpdateItem(Item.Raw, new CronJob(Command, Time, days));
 
         public (Days, TimeSpan) ParseAlarm(string raw)
         {

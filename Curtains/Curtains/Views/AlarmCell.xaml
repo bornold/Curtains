@@ -3,13 +3,23 @@
     x:Class="Curtains.Views.AlarmCell"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-    <ViewCell.View>
-        <StackLayout Padding="10">
-            <Label
-                FontSize="13"
-                LineBreakMode="NoWrap"
-                Style="{DynamicResource ListItemDetailTextStyle}"
-                Text="{Binding Raw}" />
-        </StackLayout>
-    </ViewCell.View>
+    <Frame
+        Margin="8"
+        Padding="16"
+        HasShadow="True"
+        VerticalOptions="Start">
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+            <Label Grid.ColumnSpan="6" Grid.Row="0" Text="{Binding Time, StringFormat='{}{0:hh\\:mm}'}" FontAttributes="Bold" FontSize="Large"/>
+            <Label Grid.Column="0" Grid.Row="1" Text="Mon" IsVisible="{Binding Monday}"/>
+            <Label Grid.Column="1" Grid.Row="1" Text="Tue" IsVisible="{Binding Tuesday}"/>
+            <Label Grid.Column="2" Grid.Row="1" Text="Wen" IsVisible="{Binding Wednesday}"/>
+            <Label Grid.Column="3" Grid.Row="1" Text="Thu" IsVisible="{Binding Thursday}"/>
+            <Label Grid.Column="4" Grid.Row="1" Text="Fri" IsVisible="{Binding Friday}"/>
+            <Label Grid.Column="5" Grid.Row="1" Text="Sat" IsVisible="{Binding Saturday}"/>
+            <Label Grid.Column="6" Grid.Row="1" Text="Sun" IsVisible="{Binding Sunday}"/>
+        </Grid>
+    </Frame>
 </ViewCell>

@@ -21,6 +21,7 @@ namespace Curtains.Views
             base.OnAppearing();
             if (!apperedOnce)
             {
+                apperedOnce = true;
                 await Navigation.PushModalAsync(new Overlay(), true);
                 if (await viewModel.OnAppearing())
                 {
@@ -30,12 +31,14 @@ namespace Curtains.Views
             }
             else if (viewModel.IsConnected)
             {
-                var disconnect = new ToolbarItem() { Text = "Disconnect" };
-                disconnect.Clicked += Disconnect_Clicked;
-                ToolbarItems.Add(disconnect);
+                if (ToolbarItems.Count < 1)
+                {
+                    var disconnect = new ToolbarItem() { Text = "Disconnect" };
+                    disconnect.Clicked += Disconnect_Clicked;
+                    ToolbarItems.Add(disconnect);
+                }
             }
-
-            apperedOnce = true;
+            else ToolbarItems.Clear();
         }
 
         async void Button_Clicked(object sender, System.EventArgs e)

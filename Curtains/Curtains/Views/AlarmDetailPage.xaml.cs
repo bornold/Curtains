@@ -10,12 +10,12 @@ namespace Curtains.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AlarmDetailPage : ContentPage
     {
-        AlarmDetailViewModel viewModel;
+        EditAlarmViewModel viewModel;
 
         public AlarmDetailPage()
         {
             InitializeComponent();
-            BindingContext = viewModel = new AlarmDetailViewModel();
+            BindingContext = viewModel = new EditAlarmViewModel();
         }
         public AlarmDetailPage(CronJob item)
         {
@@ -26,10 +26,10 @@ namespace Curtains.Views
             };
             deleteItem.Clicked += Delete_Clicked;
             ToolbarItems.Add(deleteItem);
-            BindingContext = viewModel = new AlarmDetailViewModel(item);
+            BindingContext = viewModel = new EditAlarmViewModel(item);
         }
 
-        private async void Delete_Clicked(object sender, EventArgs e)
+        async void Delete_Clicked(object sender, EventArgs e)
         {
             if (viewModel.Item != null)
                 await viewModel.DeleteItem();

@@ -10,14 +10,14 @@ namespace Curtains.ViewModels
 {
     public class AlarmsViewModel : BaseViewModel
     {
-        public ObservableCollection<CronJob> Items { get; set; }
+        public ObservableCollection<AlarmDetailViewModel> Items { get; set; }
         public Command LoadItemsCommand { get; set; }
         public Command RunCommand { get; set; }
 
         public AlarmsViewModel()
         {
             Title = "Alarms";
-            Items = new ObservableCollection<CronJob>();
+            Items = new ObservableCollection<AlarmDetailViewModel>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
             RunCommand = new Command(async () => await ExecuteRunCommand());
         }
@@ -35,7 +35,7 @@ namespace Curtains.ViewModels
                 var items = await Connection.GetItems(true);
                 foreach (var item in items)
                 {
-                    Items.Add(item);
+                    Items.Add(new AlarmDetailViewModel(item));
                 }
             }
             catch (Exception ex)
