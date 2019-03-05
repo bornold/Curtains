@@ -261,6 +261,6 @@ __pycache__/
 *.pyc
 
 # ssh files for testing
-.ssh/
+Curtains/Curtains/Key/
 
-
+.DS_Store

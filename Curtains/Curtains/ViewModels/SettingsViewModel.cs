@@ -6,6 +6,7 @@ using Curtains.Helpers;
 using Curtains.Services;
 using Plugin.FilePicker;
 using System;
+using System.Reflection;
 
 namespace Curtains.ViewModels
 {
@@ -98,19 +99,27 @@ namespace Curtains.ViewModels
         {
             try
             {
+
                 Stream privateKeyStream;
-                if (PrivateKey != null)
-                {
-                    privateKeyStream = PrivateKey.GenerateStreamFromString();
-                }
-                else
-                {
-                    var fileData = await CrossFilePicker.Current.PickFile();
-                    if (fileData == null)
-                        return false;
-                    PrivateKey = System.Text.Encoding.UTF8.GetString(fileData.DataArray);
-                    privateKeyStream = fileData.GetStream();
-                }
+
+
+                var assembly = Assembly.GetExecutingAssembly();
+                var resourceName = "Curtains.curt";
+                privateKeyStream = assembly.GetManifestResourceStream(resourceName);
+
+  
+                //if (PrivateKey != null)
+                //{
+                //    privateKeyStream = PrivateKey.GenerateStreamFromString();
+                //}
+                //else
+                //{
+                //    var fileData = await CrossFilePicker.Current.PickFile();
+                //    if (fileData == null)
+                //        return false;
+                //    PrivateKey = System.Text.Encoding.UTF8.GetString(fileData.DataArray);
+                //    privateKeyStream = fileData.GetStream();
+                //}
 
                 var pass = string.IsNullOrEmpty(PassKey) ? StoredPassKey : PassKey;
                 DataConnection = new SSHConnection(Host, Port, UserName, pass, privateKeyStream);
