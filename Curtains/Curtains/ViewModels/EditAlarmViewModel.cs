@@ -15,8 +15,6 @@ namespace Curtains.ViewModels
 
         bool NewItem => Item == null;
 
-        public string Command { get; set; } = "python ~/motor/open.py";
-
         internal Task DeleteItem() => DataConnection.DeleteItem(Item?.Raw);
 
         internal Task AddItem() =>
