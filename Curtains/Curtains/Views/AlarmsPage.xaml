@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
     x:Class="Curtains.Views.AlarmsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -17,7 +17,8 @@
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 ItemSelected="OnItemSelected"
                 ItemsSource="{Binding Items}"
-                HasUnevenRows="True"
+                SeparatorVisibility="None"
+                RowHeight="100"
                 RefreshCommand="{Binding LoadItemsCommand}"
                 VerticalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
@@ -27,6 +28,7 @@
                 </ListView.ItemTemplate>
             </ListView>
             <Button 
+                VerticalOptions="End"
                 Text="Open" 
                 Clicked="Open_Clicked"/>
         </StackLayout>

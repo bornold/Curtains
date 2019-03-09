@@ -1,57 +1,73 @@
 ﻿using System.Threading.Tasks;
 using Xamarin.Essentials;
-using Plugin.FilePicker.Abstractions;
-using System.IO;
-using Curtains.Helpers;
 using Curtains.Services;
-using Plugin.FilePicker;
 using System;
 using System.Reflection;
+using System.Net;
+using System.IO;
+using System.Diagnostics;
 
 namespace Curtains.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
         readonly string 
-            PassKeyKey      = nameof(PassKeyKey),
-            PrivateKeyKey   = nameof(PrivateKeyKey),
-            UserNameKey     = nameof(UserNameKey),
-            HostKey         = nameof(HostKey),
-            PortKey         = nameof(PortKey);
+            passKeyKey      = nameof(passKeyKey),
+            userNameKey     = nameof(userNameKey),
+            hostKey         = nameof(hostKey),
+            portKey         = nameof(portKey);
+
+
+        public bool
+            IsConnectable =>
+                !IsConnected &&
+                !IsBusy &&
+                ValidHost &&
+                ValidPort &&
+                ValidUserName &&
+                ValidPassKey;
 
         public string Host
         {
-            get => Preferences.Get(HostKey, null);
-            set => Preferences.Set(HostKey, value);
+            get => Preferences.Get(hostKey, "192.168.1.227");
+            set => Preferences.Set(hostKey, value);
         }
+        public bool ValidHost => IPAddress.TryParse(Host, out var ip);
+
         public int Port
         {
-            get => Preferences.Get(PortKey, 22);
-            set => Preferences.Set(PortKey, value);
+            get => Preferences.Get(portKey, 22);
+            set => Preferences.Set(portKey, value);
         }
+        public bool ValidPort => Port > 0 && Port < 65535;
+
         public string UserName
         {
-            get => Preferences.Get(UserNameKey, null);
-            set => Preferences.Set(UserNameKey, value);
+            get => Preferences.Get(userNameKey, "pi");
+            set => Preferences.Set(userNameKey, value);
         }
-        public string PassKey { get; set; }
+        public bool ValidUserName => !string.IsNullOrWhiteSpace(UserName);
 
-        string storedKey;
+        public string PassKey { get; set; }
+        public bool ValidPassKey => 
+            !string.IsNullOrWhiteSpace(PassKey) ||
+            !string.IsNullOrWhiteSpace(StoredPassKey);
+
+        string storedPassKey;
         string StoredPassKey
         {
-            get => storedKey;
+            get => storedPassKey;
             set
             {
                 if (value != null)
                 {
-                    storedKey = value;
+                    storedPassKey = value;
                     OnPropertyChanged(nameof(HasStoredKey));
                 }
             }
         }
-        public bool HasStoredKey => storedKey != null;
+        public bool HasStoredKey => StoredPassKey != null;
 
-        string PrivateKey { get; set; }
         public bool AutoConnect
         {
             get => Preferences.Get(nameof(AutoConnect), false);
@@ -68,25 +84,23 @@ namespace Curtains.ViewModels
 
         internal async Task<bool> OnAppearing()
         {
+            IsBusy = true;
             try
             {
-                IsBusy = true;
+                StoredPassKey = await SecureStorage.GetAsync(passKeyKey);
 
-                StoredPassKey = await SecureStorage.GetAsync(PassKeyKey);
-                PrivateKey = await SecureStorage.GetAsync(PrivateKeyKey);
-
-                if (StoredPassKey != null && 
-                    PrivateKey != null && 
-                    UserName != null && 
-                    Host != null &&
-                    AutoConnect)
+                if (AutoConnect &&
+                    !string.IsNullOrEmpty(StoredPassKey) &&
+                    !string.IsNullOrEmpty(UserName) &&
+                    !string.IsNullOrEmpty(Host))
                 {
                     return await Connect();
                 }
                 return false;
             }
-            catch
+            catch (Exception e)
             {
+                Debug.WriteLine(e);
                 return false;
             }
             finally
@@ -97,42 +111,32 @@ namespace Curtains.ViewModels
 
         internal async Task<bool> Connect()
         {
+            IsBusy = true;
             try
             {
-
-                Stream privateKeyStream;
-
-
-                var assembly = Assembly.GetExecutingAssembly();
-                var resourceName = "Curtains.curt";
-                privateKeyStream = assembly.GetManifestResourceStream(resourceName);
-
-  
-                //if (PrivateKey != null)
-                //{
-                //    privateKeyStream = PrivateKey.GenerateStreamFromString();
-                //}
-                //else
-                //{
-                //    var fileData = await CrossFilePicker.Current.PickFile();
-                //    if (fileData == null)
-                //        return false;
-                //    PrivateKey = System.Text.Encoding.UTF8.GetString(fileData.DataArray);
-                //    privateKeyStream = fileData.GetStream();
-                //}
-
+                var privateKeyStream = 
+                    Assembly
+                        .GetExecutingAssembly()
+                        .GetManifestResourceStream("Curtains.Key.curt");
+                        
                 var pass = string.IsNullOrEmpty(PassKey) ? StoredPassKey : PassKey;
                 DataConnection = new SSHConnection(Host, Port, UserName, pass, privateKeyStream);
                 OnPropertyChanged(nameof(IsConnected));
-                await SecureStorage.SetAsync(PassKeyKey, pass);
-                await SecureStorage.SetAsync(PrivateKeyKey, PrivateKey);
+
+                if (!string.IsNullOrEmpty(PassKey)) await SecureStorage.SetAsync(passKeyKey, PassKey);
+
                 ErrorMessage = string.Empty;
                 return true;
             }
             catch (Exception e)
             {
+                Debug.WriteLine(e);
                 ErrorMessage = e.Message;
                 return false;
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 

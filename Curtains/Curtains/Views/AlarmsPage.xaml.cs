@@ -25,7 +25,10 @@ namespace Curtains.Views
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
             if (args.SelectedItem is AlarmDetailViewModel item)
+            {
                 await Navigation.PushAsync(new AlarmDetailPage(item.Item));
+                viewModel.Items.Clear();
+            }
 
             // Manually deselect item.
             ItemsListView.SelectedItem = null;

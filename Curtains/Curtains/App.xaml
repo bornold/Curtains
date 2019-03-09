@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Application
     x:Class="Curtains.App"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -10,16 +10,15 @@
             <helpers:NotConverter x:Key="not" />
 
             <!--  Global Styles  -->
-            <Color x:Key="NavigationPrimary">#212121</Color>
-            <Color x:Key="BackgroundPrimary">#ededed</Color>
+            <Color x:Key="NavigationPrimary">#OOOOOO</Color>
+            <Color x:Key="BackgroundPrimary">#FFFFFF</Color>
             <Color x:Key="AccentColor">#000000</Color>
-            <Color x:Key="TextColor">#6d6d6d</Color>
-            <Color x:Key="TextColorSecondary">#6d6d6d</Color>
-            <Color x:Key="ButtonTextColor">#ffffff</Color>
+            <Color x:Key="TextColor">#000000</Color>
+            <Color x:Key="TextColorSecondary">#FFFFFF</Color>
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
                 <Setter Property="BackgroundColor" Value="{StaticResource BackgroundPrimary}" />
-                <Setter Property="BarTextColor" Value="{x:StaticResource TextColor}" />
+                <Setter Property="BarTextColor" Value="{x:StaticResource TextColorSecondary}" />
             </Style>
             
             <Style TargetType="ContentPage">
@@ -41,7 +40,7 @@
                 <Setter Property="Margin" Value="32"/>
                 <Setter Property="VerticalOptions" Value="EndAndExpand"/>
                 <Setter Property="BackgroundColor" Value="{x:StaticResource NavigationPrimary}"/>
-                <Setter Property="TextColor" Value="{x:StaticResource ButtonTextColor}" />
+                <Setter Property="TextColor" Value="{x:StaticResource TextColorSecondary}" />
             </Style>
             <Style TargetType="Label">
                 <Setter Property="TextColor" Value="{x:StaticResource TextColor}" />

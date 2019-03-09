@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
     x:Class="Curtains.Views.SettingsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -27,6 +27,7 @@
             <Label Text="User name" />
             <Entry
                 Placeholder="User name" 
+                MaxLength="32"
                 Text="{Binding UserName}" />
             <Label Text="Passkey" />
             <Entry

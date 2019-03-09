@@ -34,5 +34,9 @@
 	<string>Curtains</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>XSLaunchImageAssets</key>
+	<string>Assets.xcassets/LaunchImage.launchimage</string>
 </dict>
 </plist>

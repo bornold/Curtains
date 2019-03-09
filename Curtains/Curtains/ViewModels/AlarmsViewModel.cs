@@ -38,9 +38,9 @@ namespace Curtains.ViewModels
                     Items.Add(new AlarmDetailViewModel(item));
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Debug.WriteLine(ex);
+                Debug.WriteLine(e);
             }
             finally
             {

@@ -14,13 +14,14 @@
     <EmbeddedResource Remove=".ssh\**" />
     <None Remove=".ssh\**" />
     <None Remove="Key\curt" />
+    <Compile Remove="Views\Overlay.xaml.cs" />
+    <Compile Remove="Helpers\StringStream.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="SSH.NET" Version="2016.1.0" />
     <PackageReference Include="Xamarin.Essentials" Version="1.0.1" />
-    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1008975" />
-    <PackageReference Include="Xamarin.Plugin.FilePicker" Version="2.0.135" />  
+    <PackageReference Include="Xamarin.Forms" Version="3.6.0.220655" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,9 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Views\AlarmCell.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\Overlay.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

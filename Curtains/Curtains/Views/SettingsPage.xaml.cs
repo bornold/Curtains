@@ -22,12 +22,10 @@ namespace Curtains.Views
             if (!apperedOnce)
             {
                 apperedOnce = true;
-                await Navigation.PushModalAsync(new Overlay(), true);
                 if (await viewModel.OnAppearing())
                 {
                     await ChangePage();
                 }
-                await Navigation.PopModalAsync(true);
             }
             else if (viewModel.IsConnected)
             {
@@ -43,12 +41,10 @@ namespace Curtains.Views
 
         async void Button_Clicked(object sender, System.EventArgs e)
         {
-            await Navigation.PushModalAsync(new Overlay(), true);
             if (viewModel.IsConnected || await viewModel.Connect())
             {
                 await ChangePage();
             }
-            await Navigation.PopModalAsync(true);
         }
 
         void Disconnect_Clicked(object sender, System.EventArgs e)
