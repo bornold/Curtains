@@ -261,6 +261,12 @@ __pycache__/
 *.pyc
 
 # ssh files for testing
+<<<<<<< Updated upstream
 Curtains/Curtains/Key/
 
 .DS_Store
+=======
+.ssh/
+
+Resources/Resource.designer.cs
+>>>>>>> Stashed changes
