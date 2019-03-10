@@ -10,7 +10,7 @@
     </ContentPage.BindingContext>
     <ContentPage.Resources>
         <Style TargetType="Entry">
-            <Setter Property="IsEnabled" Value="{Binding IsConnected, Converter={StaticResource not}}"/>
+            <Setter Property="IsEnabled" Value="{Binding Editable}"/>
         </Style>
     </ContentPage.Resources>
     <ScrollView>
@@ -48,6 +48,13 @@
                 IsToggled="{Binding AutoConnect}"                 
                 IsEnabled="{Binding IsConnected, Converter={StaticResource not}}"/>
             <Label Text="{Binding ErrorMessage}" TextColor="Red" />
+            <ActivityIndicator 
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"
+                Color="Black"
+                WidthRequest="100"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand"/>
             <Button 
                 Clicked="Button_Clicked" 
                 Text="Connect" >

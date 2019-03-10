@@ -16,7 +16,7 @@ namespace Curtains.ViewModels
 
 
         bool isBusy = false;
-        public bool IsBusy
+        public virtual bool IsBusy
         {
             get => isBusy; 
             set => SetProperty(ref isBusy, value);

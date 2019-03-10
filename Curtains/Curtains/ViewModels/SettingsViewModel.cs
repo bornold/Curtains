@@ -11,6 +11,12 @@ namespace Curtains.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
+        public SettingsViewModel()
+        {
+            IsBusy = true;
+            Title = "Settings";
+        }
+
         readonly string 
             passKeyKey      = nameof(passKeyKey),
             userNameKey     = nameof(userNameKey),
@@ -18,6 +24,17 @@ namespace Curtains.ViewModels
             portKey         = nameof(portKey);
 
 
+        public override bool IsBusy 
+        { 
+            get => base.IsBusy;
+            set
+            {
+                base.IsBusy = value;
+                OnPropertyChanged(nameof(Editable));
+            }
+        }
+
+        public bool Editable => !IsConnected && !IsBusy;
         public bool
             IsConnectable =>
                 !IsConnected &&
@@ -80,7 +97,6 @@ namespace Curtains.ViewModels
             get => errorMessage;
             set => SetProperty(ref errorMessage, value);
         }
-        public SettingsViewModel() => Title = "Settings";
 
         internal async Task<bool> OnAppearing()
         {
@@ -145,6 +161,7 @@ namespace Curtains.ViewModels
             Connection?.Client?.Dispose();
             DataConnection = null;
             OnPropertyChanged(nameof(IsConnected));
+            OnPropertyChanged(nameof(Editable));
         }
     }
 }

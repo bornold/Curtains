@@ -15,6 +15,7 @@
             <Color x:Key="AccentColor">#000000</Color>
             <Color x:Key="TextColor">#000000</Color>
             <Color x:Key="TextColorSecondary">#FFFFFF</Color>
+            <Color x:Key="TextColorTrinary">#F0F0F0</Color>
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
                 <Setter Property="BackgroundColor" Value="{StaticResource BackgroundPrimary}" />
@@ -50,6 +51,7 @@
                 <Setter Property="IsTextPredictionEnabled" Value="False"/>
                 <Setter Property="PlaceholderColor" Value="{x:StaticResource TextColorSecondary}" />
                 <Setter Property="TextColor"  Value="{x:StaticResource AccentColor}" />
+                <Setter Property="PlaceholderColor" Value="{x:StaticResource TextColorTrinary}"/>
             </Style>
         </ResourceDictionary>
     </Application.Resources> 

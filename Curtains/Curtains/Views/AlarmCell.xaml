@@ -8,7 +8,7 @@
         Padding="16"
         HasShadow="True"
         VerticalOptions="Start">
-        <Grid ColumnSpacing="0" RowSpacing="0">
+        <Grid ColumnSpacing="4" RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*" />
             </Grid.RowDefinitions>
