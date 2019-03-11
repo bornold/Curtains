@@ -22,31 +22,42 @@ namespace Curtains.Services
 
         public SshClient Connection;
 
+        List<CronJob> cache;
+
         BaseClient IConnection<CronJob>.Client => Connection;
 
         readonly string addCommand = "(crontab -l ; echo \"{0}\") | crontab -";
         public Task<bool> AddItem(CronJob item)
         {
-            var command = string.Format(addCommand, item.Raw);
-            return Task.Run(() => Connection.RunCommand(command).Error == null);
+            if (cache.Contains(item)) return Task.FromResult(false);
+            else 
+            {
+                var command = string.Format(addCommand, item.Raw);
+                return Task.Run(() => Connection.RunCommand(command).Error == null);
+            }
         }
 
         readonly string removeCommand = "crontab -l | grep -v '^{0}$' | crontab -";
         public Task<bool> DeleteItem(string id)
         {
-            var escaped = id.EscapeSpecialCharacterGrep();
+            var escaped = id.EscapeSpecialCharacterForGrep();
             var command = string.Format(removeCommand, escaped);
             return Task.Run(() => Connection.RunCommand(command).Error == null);
         }
 
-        public Task<IEnumerable<CronJob>> GetItems(bool forceRefresh = false)
-            => Task.Run(() =>
-                    Connection
-                        .RunCommand("crontab -l")
-                        .Result
-                        .Split('\n')
-                        .Where(NotCommentsAndNotWhiteSpace)
-                        .Select(AsCronJob));
+        public async Task<IEnumerable<CronJob>> GetItems(bool forceRefresh = false)
+        {
+            cache = await Task.Run(() =>
+                   Connection
+                       .RunCommand("crontab -l")
+                       .Result
+                       .Split('\n')
+                       .Where(NotCommentsAndNotWhiteSpace)
+                       .Select(AsCronJob)
+                       .ToList());
+            
+            return cache;
+        }
 
         CronJob AsCronJob(string raw) 
             => string.IsNullOrWhiteSpace(raw) ? null : new CronJob { Raw = raw };
@@ -57,7 +68,7 @@ namespace Curtains.Services
         readonly string updateCommand = "(crontab -l | grep -v '^{0}$' ; echo \"{1}\") | crontab -";
         public Task<bool> UpdateItem(string id, CronJob item)
         {
-            var escaped = id.EscapeSpecialCharacterGrep();
+            var escaped = id.EscapeSpecialCharacterForGrep();
             var command = string.Format(updateCommand, escaped, item.Raw);
             return Task.Run(() => Connection.RunCommand(command).Error == null);
         }
