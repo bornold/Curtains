@@ -25,9 +25,11 @@ namespace Curtains.Services
         BaseClient IConnection<CronJob>.Client => Connection;
 
         readonly string addCommand = "(crontab -l ; echo \"{0}\") | crontab -";
-        public Task<bool> AddItem(CronJob item) =>
-            Task.Run(() => Connection.RunCommand(string.Format(addCommand, item.Raw)).Error == null);
-        
+        public Task<bool> AddItem(CronJob item)
+        {
+            var command = string.Format(addCommand, item.Raw);
+            return Task.Run(() => Connection.RunCommand(command).Error == null);
+        }
 
         readonly string removeCommand = "crontab -l | grep -v '^{0}$' | crontab -";
         public Task<bool> DeleteItem(string id)
@@ -52,10 +54,12 @@ namespace Curtains.Services
         bool NotCommentsAndNotWhiteSpace(string raw) 
             => !string.IsNullOrWhiteSpace(raw) && !raw.StartsWith("#");
 
-        public async Task<bool> UpdateItem(string id, CronJob item)
+        readonly string updateCommand = "(crontab -l | grep -v '^{0}$' ; echo \"{1}\") | crontab -";
+        public Task<bool> UpdateItem(string id, CronJob item)
         {
-            await DeleteItem(id);
-            return await AddItem(item);
+            var escaped = id.EscapeSpecialCharacterGrep();
+            var command = string.Format(updateCommand, escaped, item.Raw);
+            return Task.Run(() => Connection.RunCommand(command).Error == null);
         }
 
         public Task<string> RunCommand(string command) =>
