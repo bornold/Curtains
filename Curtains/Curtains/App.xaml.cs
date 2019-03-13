@@ -15,11 +15,11 @@ namespace Curtains
             MainPage = new NavigationPage(new SettingsPage());
         }
 
-        protected override void OnResume()
+        protected override async void OnResume()
         {
-            if (BaseViewModel.DataConnection?.Client?.IsConnected == false)
+            if (BaseViewModel.DataConnection?.Client?.IsConnected == false && MainPage is NavigationPage navpage)
             {
-                MainPage = new NavigationPage(new SettingsPage());
+                await navpage.PopToRootAsync();
             }
         }
     }

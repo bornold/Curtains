@@ -32,7 +32,7 @@
             <Label Text="Passkey" />
             <Entry
                 IsPassword="True"
-                Placeholder="Passkey"
+                Placeholder="Passphrase"
                 Text="{Binding PassKey}">
                 <Entry.Triggers>
                     <DataTrigger

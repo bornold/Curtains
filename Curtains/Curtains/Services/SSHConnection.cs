@@ -1,6 +1,7 @@
 ﻿using Curtains.Helpers;
 using Curtains.Models;
 using Renci.SshNet;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,8 +15,10 @@ namespace Curtains.Services
         {
             var privateKeyFile = new PrivateKeyFile(fileStream, passKey);
             var privateKeyAuth = new PrivateKeyAuthenticationMethod(username, privateKeyFile);
-            var connectionInfo = new ConnectionInfo(host, port, username, authenticationMethods: privateKeyAuth);
-
+            var connectionInfo = new ConnectionInfo(host, port, username, authenticationMethods: privateKeyAuth)
+            {
+                Timeout = TimeSpan.FromSeconds(4)
+            };
             Connection = new SshClient(connectionInfo);
             Connection.Connect();
         }
